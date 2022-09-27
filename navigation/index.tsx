@@ -25,19 +25,24 @@ import {
   RootTabParamList,
   RootTabScreenProps,
 } from "../types";
-import LinkingConfiguration from "./LinkingConfiguration";
+// import LinkingConfiguration from "./LinkingConfiguration";
 
+interface INavProps {
+  colorScheme: ColorSchemeName;
+  sendDataToFirebase: () => void;
+}
+interface IRootNavProps {
+  sendDataToFirebase: () => void;
+}
 export default function Navigation({
   colorScheme,
-}: {
-  colorScheme: ColorSchemeName;
-}) {
+  sendDataToFirebase,
+}: INavProps) {
   return (
     <NavigationContainer
-      linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      <RootNavigator />
+      <RootNavigator sendDataToFirebase={sendDataToFirebase} />
     </NavigationContainer>
   );
 }
@@ -48,7 +53,7 @@ export default function Navigation({
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function RootNavigator() {
+function RootNavigator({ sendDataToFirebase }: IRootNavProps) {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -60,7 +65,7 @@ function RootNavigator() {
         name="NotFound"
         component={NotFoundScreen}
         options={{ title: "Oops!" }}
-        initialParams={{ abc: 20 }}
+        initialParams={{ sendDataToFirebase }}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
@@ -75,6 +80,9 @@ function RootNavigator() {
  */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
+interface IBottomTabNavProps {
+  sendDataToFirebase: () => void;
+}
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 

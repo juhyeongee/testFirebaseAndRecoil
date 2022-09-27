@@ -26,7 +26,7 @@ export type RootStackParamList = {
 };
 
 export type NotFoundParamList = {
-  abc: number;
+  sendDataToFirebase: () => void;
   bbc?: number;
 };
 
